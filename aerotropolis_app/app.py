@@ -51,7 +51,6 @@ def show_content(src, news_id):
     if request.method == "POST":
         news_collections = news_db[src]
         if "place-name" in request.form:
-            # return render_template("googlemapapi.html", src=src, new_id=news_id, place=request.form["place-name"])
             return redirect(url_for("gomap", src=src, news_id=news_id, place=request.form["place-name"]))
         else:
             if "kword" in request.form:
