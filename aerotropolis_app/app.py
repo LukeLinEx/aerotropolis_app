@@ -46,20 +46,23 @@ def show_content(src, news_id):
             # request.form["importance"]
         return redirect(url_for('show_content', src=src, news_id=news_id))
     else:
-        news_collections = news_db[src]
-        d = news_collections.find_one({"_id": ObjectId(news_id)})
-        doc = {
-            "date_released": str(d["date_released"].date()), "title": d["title"],
-            "source": src, "_id": str(d["_id"]), "content":d["content"].replace("<br>", "").strip()
-                }
-        if "importance" in d:
-            doc["importance"] = d["importance"]
-        if "keywords" in d:
-            doc["keywords"] = d["keywords"]
+        if "place-name" in request.form:
+            pass
         else:
-            doc["keywords"] = []
+            news_collections = news_db[src]
+            d = news_collections.find_one({"_id": ObjectId(news_id)})
+            doc = {
+                "date_released": str(d["date_released"].date()), "title": d["title"],
+                "source": src, "_id": str(d["_id"]), "content":d["content"].replace("<br>", "").strip()
+                    }
+            if "importance" in d:
+                doc["importance"] = d["importance"]
+            if "keywords" in d:
+                doc["keywords"] = d["keywords"]
+            else:
+                doc["keywords"] = []
 
-        return render_template('news_edit.html', doc=doc)
+            return render_template('news_edit.html', doc=doc)
 
 
 if __name__ == '__main__':

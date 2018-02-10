@@ -6,7 +6,17 @@
 
 
   <body>
-    <div class="short-left-option">
+    <div id="ontopDiv">
+        <font align="center">搜索 Google Map:</font>
+        <form action={{url_for('show_content', src=doc.source, news_id=doc._id)}} method="GET" class=add-keyword>
+            <input type='text' size='20' name='place-name' placeholder='地名'>
+            <input type=submit name="place-name", value=搜索><br>
+        </form>
+    </div>
+    <div class="left-option">
+        <div>
+            <a href="{{url_for('list_all_news')}}">回到列表</a>
+        </div>
         <div>
             <form action={{url_for('show_content', src=doc.source, news_id=doc._id)}} method="POST" class=add-keyword>
                 <p>請評價重要性:</p>
@@ -39,26 +49,11 @@
         </div>
     </div>
 
-    <div id="lst">
+    <div id="content">
         <div><h4>{{doc.title}}</h4></div>
         <div>{{doc.content|safe}}</div>
     </div>
 
-    <script type="text/javascript" src="{{ url_for('static', filename='googleapi.js') }}">
-    </script>
-
-    <!--<script type="text/javascript">-->
-      <!--window.appConfig = {-->
-        <!--debug: {% if env == 'development' %}true{% else %}false{% endif %},-->
-        <!--document: document,-->
-        <!--doc: {{doc|tojson}}-->
-      <!--}-->
-    <!--</script>-->
-
-
-    <script async defer
-        src={{"https://maps.googleapis.com/maps/api/js?key={}&v=3&callback=initMap".format(key)}}>
-    </script>
 
   </body>
 </html>
