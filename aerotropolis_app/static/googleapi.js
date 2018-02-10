@@ -22,8 +22,7 @@ function initMap() {
         {title: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}}
     ];
 
-    var locations1 = appConfig.items
-
+    var locations1 = appConfig.news
 
     var largeInfowindow = new google.maps.InfoWindow();
     var bounds = new google.maps.LatLngBounds();
@@ -93,4 +92,23 @@ function hideListings() {
     for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
     }
+}
+
+
+function showSelected(){
+  var input, filter, table, tr, td, i;
+  src = document.getElementById("src-select");
+  filter = src.value.toUpperCase();
+  table = document.getElementById("news-lst");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[2];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
 }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+
+
+  <body>
+    <div class="short-left-option">
+        <div>
+            <form action={{url_for('show_content', src=doc.source, news_id=doc._id)}} method="POST" class=add-keyword>
+                <p>請評價重要性:</p>
+                <select name="importance">
+                    {% for i in range(1,6) %}
+                        {% if i == doc.importance %}
+                            <option value={{i}} selected="selected">{{i}}</option>
+                        {% else %}
+                            <option value={{i}}>{{i}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <input type=submit name="importance", value=評分><br>
+            </form>
+        <br>
+        <font size="2">本文重要性目前評定為: {{doc.importance}}</font>
+        </div>
+
+        <br><br>
+
+        <div>
+            <form action={{url_for('show_content', src=doc.source, news_id=doc._id)}} method="POST" class=add-keyword>
+                <p>貼上關鍵字:</p>
+                <input type='text' size='20' name='kword' placeholder='Key Words'>
+                <input type=submit name="kword", value=確定><br>
+            </form>
+            {% for k in doc.keywords %}
+            {{k}}<br>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="lst">
+        <div><h4>{{doc.title}}</h4></div>
+        <div>{{doc.content|safe}}</div>
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='googleapi.js') }}">
+    </script>
+
+    <!--<script type="text/javascript">-->
+      <!--window.appConfig = {-->
+        <!--debug: {% if env == 'development' %}true{% else %}false{% endif %},-->
+        <!--document: document,-->
+        <!--doc: {{doc|tojson}}-->
+      <!--}-->
+    <!--</script>-->
+
+
+    <script async defer
+        src={{"https://maps.googleapis.com/maps/api/js?key={}&v=3&callback=initMap".format(key)}}>
+    </script>
+
+  </body>
+</html>

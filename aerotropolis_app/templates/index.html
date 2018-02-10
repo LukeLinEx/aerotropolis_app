@@ -1,44 +1,55 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/ui.all.css" />
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
   </head>
+
+
   <body>
-    <div class="options-box">
+    <div class="left-option">
       <h1>Find Your</h1>
       <div>
         <input id="show-listings" type="button" value="Show">
         <input id="hide-listings" type="button" value="Hide">
       </div>
+
+      <div>
+        <form action="{{url_for('list_all_news')}}" method="POST" class=add-entry>
+          <dl>
+            <dd>
+              <select id="src-select">
+                <option value="udn">udn</option>
+                <option value="tycg">tycg</option>
+              </select>
+            <dd><input type=button value=Filter onclick="showSelected()">
+          </dl>
+        </form>
+      </div>
     </div>
 
 
     <div id="lst">
-      <table border="1" class="ui-widget">
+      <table border="1" class="ui-widget" id="news-lst">
         <tbody>
-          {% for i in items %}
+          <tr>
+            <th align="center">日期</th>
+            <th align="center">標題</th>
+            <th align="center">來源</th>
+            <th align="center">重要性</th>
+          </tr>
+          {% for i in news %}
             <tr>
               <td width=95px align="center">{{i.date_released}}</td>
-              <td width=380px><a href="#">{{i.title}}</a></td>
+              <td width=380px><a href="{{url_for('show_content', src=i.source, news_id=i._id)}}">{{i.title}}</a></td>
+              <td width=60px align="center">{{i.source}}</td>
+              <td width=60px align="center">{{i.importance}}</td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
 
-    <!--<div id="map"></div>-->
-
-  <script type="text/javascript">
-    window.appConfig = {
-      debug: {% if env == 'development' %}true{% else %}false{% endif %},
-      items: {{items | tojson}}
-    }
-  </script>
-
-
-    <script
-            type="text/javascript" src="{{ url_for('static', filename='googleapi.js') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='googleapi.js') }}">
     </script>
 
     <script async defer

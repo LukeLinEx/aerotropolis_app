@@ -15,7 +15,7 @@ body {
 }
 
 input {
-    font    -size: 12px;
+    font-size: 15px;
 }
 
 h1 {
@@ -46,16 +46,31 @@ h1 {
     right: 0px;
 }
 
-.options-box {
-    background: #fff;
-    border: 1px solid #999;
-    border-radius: 3px;
-    height: 100%;
-    line-height: 35px;
-    padding: 10px 10px 30px 10px;
 
-    text-align: left;
+.left-option {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 200px;
+    height: 100%;
+    z-index: 10000;
+    background-color: #ffffc3;
+    border-width: 1px;
+    border-style: solid;
+    padding: 15px;
+    font-size: 16px;
 }
 
-
+.short-left-option {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    z-index: 10000;
+    background-color: #ffffc3;
+    border-width: 1px;
+    border-style: solid;
+    padding: 15px;
+    font-size: 16px;
+}

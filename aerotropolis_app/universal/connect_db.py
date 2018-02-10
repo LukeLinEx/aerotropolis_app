@@ -16,8 +16,11 @@ def connect_collection(project, element):
     return collection
 
 
-udn = connect_collection(db, "udn")
-tycg = connect_collection(db, "tycg")
+lst_src = ["udn", "tycg"]
+news_db = {}
+for src in lst_src:
+    news_db[src] = connect_collection(db, src)
+
 
 if __name__ == "__main__":
-    print([x["title"] for x in udn.find()])
+    print([x["title"] for x in news_db["udn"].find()])
