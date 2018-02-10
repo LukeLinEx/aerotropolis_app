@@ -78,7 +78,7 @@ def show_content(src, news_id):
 
 @app.route("/news/<string:src>/<string:news_id>/<string:place>", methods=['GET', 'POST'])
 def gomap(src, news_id, place):
-    return render_template("googlemapapi.html", src=src, new_id=news_id, place=place)
+    return render_template("googlemapapi.html", src=src, new_id=news_id, place=place, key=key)
 
 
 if __name__ == '__main__':

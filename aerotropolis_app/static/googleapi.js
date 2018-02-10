@@ -5,9 +5,10 @@ var markers = [];
 
 function initMap() {
     // Constructor creates a new map - only center and zoom are required.
-    map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 40.7413549, lng: -73.9980244},
-    zoom: 13
+        map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 40.7413549, lng: -73.9980244},
+        zoom: 13,
+        mapTypeControl: false
     });
 
 
@@ -22,7 +23,7 @@ function initMap() {
         {title: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}}
     ];
 
-    var locations1 = appConfig.news
+    var locations1 = appConfig.place
 
     var largeInfowindow = new google.maps.InfoWindow();
     var bounds = new google.maps.LatLngBounds();
@@ -30,7 +31,7 @@ function initMap() {
     for (var i = 0; i < locations.length; i++) {
         //   Get the position from the location array.
         var position = locations[i].location;
-        var title = locations1[i].title;
+        var title = locations1;
 
         // Create a marker per location, and put into markers array.
         var marker = new google.maps.Marker({
@@ -48,12 +49,12 @@ function initMap() {
             populateInfoWindow(this, largeInfowindow);
         });
 
-        document.getElementById('show-listings').addEventListener('click', showListings);
-        document.getElementById('hide-listings').addEventListener('click', hideListings);
-//        bounds.extend(markers[i].position);
+//        document.getElementById('show-listings').addEventListener('click', showListings);
+//        document.getElementById('hide-listings').addEventListener('click', hideListings);
+        bounds.extend(markers[i].position);
     }
     // Extend the boundaries of the map for each marker
-//    map.fitBounds(bounds);
+    map.fitBounds(bounds);
 }
 
 
@@ -74,6 +75,11 @@ function populateInfoWindow(marker, infowindow) {
         });
     }
 }
+
+
+
+
+
 
 
 // This function will loop through the markers array and display them all.
@@ -112,3 +118,35 @@ function showSelected(){
     }
   }
 }
+
+
+
+
+function getLatLong(url){
+    var getJSON = function(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'json';
+    xhr.onload = function() {
+        var status = xhr.status;
+        if (status === 200) {
+            callback(null, xhr.response);
+        } else {
+            callback(status, xhr.response);
+        }
+    };
+    xhr.send();
+    };
+
+    getJSON(url,
+        function(err, data) {
+            if (err !== null) {
+            alert('Something went wrong: ' + err);
+            } else {
+            document.getElementById("testing").innerHTML = data.results[0].formatted_address;
+            console.log(data.results[0].formatted_address);
+            }
+        }
+    );
+}
+
