@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='googlemapstyles.css') }}">
+  </head>
+  <body>
+    <div class="options-box">
+      <h1>Find Your</h1>
+      <div>
+        <input id="show-listings" type="button" value="Show">
+        <input id="hide-listings" type="button" value="Hide">
+      </div>
+    </div>
+    <div id="map"></div>
+
+  <script type="text/javascript">
+    window.appConfig = {
+      debug: {% if env == 'development' %}true{% else %}false{% endif %},
+      place: {{place| tojson}}
+    }
+  </script>
+
+
+    <script
+            type="text/javascript" src="{{ url_for('static', filename='googleapi.js') }}">
+    </script>
+
+    <script async defer
+        src={{"https://maps.googleapis.com/maps/api/js?key={}&v=3&callback=initMap".format(key)}}>
+    </script>
+
+  </body>
+</html>
+

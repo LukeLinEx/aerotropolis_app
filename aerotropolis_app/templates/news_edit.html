@@ -8,7 +8,7 @@
   <body>
     <div id="ontopDiv">
         <font align="center">搜索 Google Map:</font>
-        <form action={{url_for('show_content', src=doc.source, news_id=doc._id)}} method="GET" class=add-keyword>
+        <form action={{url_for('show_content', src=doc.source, news_id=doc._id)}} method="POST" class=add-keyword>
             <input type='text' size='20' name='place-name' placeholder='地名'>
             <input type=submit name="place-name", value=搜索><br>
         </form>

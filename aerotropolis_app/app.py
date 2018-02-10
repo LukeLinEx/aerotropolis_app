@@ -1,9 +1,20 @@
+from os.path import expanduser
 import pymongo
 from bson.objectid import ObjectId
 from flask import Flask, render_template, request, redirect, url_for
 from universal.connect_db import news_db, lst_src
 
 app = Flask(__name__)
+
+
+def get_googlemap_key():
+    key_f = expanduser("~/.credential/googlemapapi")
+    with open(key_f) as f:
+        key = f.read()
+    return key
+
+
+key = get_googlemap_key().strip()
 
 
 @app.route('/')
@@ -33,36 +44,41 @@ def list_all_news():
 def show_content(src, news_id):
     if request.method == "POST":
         news_collections = news_db[src]
-        if "kword" in request.form:
-            news_collections.update(
-                {"_id": ObjectId(news_id)},
-                {"$push": {"keywords": request.form["kword"]}}
-            )
-        if "importance" in request.form:
-            news_collections.update(
-                {"_id": ObjectId(news_id)},
-                {"$set": {"importance": int(request.form["importance"])}}
-            )
-            # request.form["importance"]
-        return redirect(url_for('show_content', src=src, news_id=news_id))
-    else:
         if "place-name" in request.form:
-            pass
+            # return render_template("googlemapapi.html", src=src, new_id=news_id, place=request.form["place-name"])
+            return redirect(url_for("gomap", src=src, news_id=news_id, place=request.form["place-name"]))
         else:
-            news_collections = news_db[src]
-            d = news_collections.find_one({"_id": ObjectId(news_id)})
-            doc = {
-                "date_released": str(d["date_released"].date()), "title": d["title"],
-                "source": src, "_id": str(d["_id"]), "content":d["content"].replace("<br>", "").strip()
-                    }
-            if "importance" in d:
-                doc["importance"] = d["importance"]
-            if "keywords" in d:
-                doc["keywords"] = d["keywords"]
-            else:
-                doc["keywords"] = []
+            if "kword" in request.form:
+                news_collections.update(
+                    {"_id": ObjectId(news_id)},
+                    {"$push": {"keywords": request.form["kword"]}}
+                )
+            if "importance" in request.form:
+                news_collections.update(
+                    {"_id": ObjectId(news_id)},
+                    {"$set": {"importance": int(request.form["importance"])}}
+                )
+            return redirect(url_for('show_content', src=src, news_id=news_id))
+    else:
+        news_collections = news_db[src]
+        d = news_collections.find_one({"_id": ObjectId(news_id)})
+        doc = {
+            "date_released": str(d["date_released"].date()), "title": d["title"],
+            "source": src, "_id": str(d["_id"]), "content":d["content"].replace("<br>", "").strip()
+                }
+        if "importance" in d:
+            doc["importance"] = d["importance"]
+        if "keywords" in d:
+            doc["keywords"] = d["keywords"]
+        else:
+            doc["keywords"] = []
 
-            return render_template('news_edit.html', doc=doc)
+        return render_template('news_edit.html', doc=doc)
+
+
+@app.route("/news/<string:src>/<string:news_id>/<string:place>", methods=['GET', 'POST'])
+def gomap(src, news_id, place):
+    return render_template("googlemapapi.html", src=src, new_id=news_id, place=place)
 
 
 if __name__ == '__main__':
