@@ -18,6 +18,12 @@ key = get_googlemap_key().strip()
 
 
 @app.route('/')
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+    return render_template('test.html')
+
+
+@app.route('/')
 @app.route('/news', methods=['GET', 'POST'])
 def list_all_news():
     news = []
