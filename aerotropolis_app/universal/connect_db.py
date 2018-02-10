@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from os.path import expanduser
 
 db = "aerotropolis"
-path = expanduser("~/.credentials/{db}".format(db=db))
+path = expanduser("~/.credentials/{db}.txt".format(db=db))
 mongo_connect = open(path, 'r')
 ip, port, user, pwd = map(lambda x: x.strip(), mongo_connect.readlines())
 client = MongoClient(ip, int(port))
