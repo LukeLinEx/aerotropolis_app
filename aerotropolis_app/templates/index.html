@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/ui.all.css" />
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <div class="options-box">
+      <h1>Find Your</h1>
+      <div>
+        <input id="show-listings" type="button" value="Show">
+        <input id="hide-listings" type="button" value="Hide">
+      </div>
+    </div>
+
+
+    <div id="lst">
+      <table border="1" class="ui-widget">
+        <tbody>
+          {% for i in items %}
+            <tr>
+              <td width=95px align="center">{{i.date_released}}</td>
+              <td width=380px><a href="#">{{i.title}}</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!--<div id="map"></div>-->
+
+  <script type="text/javascript">
+    window.appConfig = {
+      debug: {% if env == 'development' %}true{% else %}false{% endif %},
+      items: {{items | tojson}}
+    }
+  </script>
+
+
+    <script
+            type="text/javascript" src="{{ url_for('static', filename='googleapi.js') }}">
+    </script>
+
+    <script async defer
+        src={{"https://maps.googleapis.com/maps/api/js?key={}&v=3&callback=initMap".format(key)}}>
+    </script>
+
+  </body>
+</html>

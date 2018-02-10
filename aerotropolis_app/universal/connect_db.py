@@ -17,7 +17,7 @@ def connect_collection(project, element):
 
 
 udn = connect_collection(db, "udn")
-
+tycg = connect_collection(db, "tycg")
 
 if __name__ == "__main__":
     print([x["title"] for x in udn.find()])
