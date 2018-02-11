@@ -50,8 +50,8 @@ def list_all_news():
 def show_content(src, news_id):
     if request.method == "POST":
         news_collections = news_db[src]
-        if "place-name" in request.form:
-            return redirect(url_for("gomap", src=src, news_id=news_id, place=request.form["place-name"]))
+        if "gomap" in request.form:
+            return redirect(url_for("gomap", src=src, news_id=news_id))
         else:
             if "kword" in request.form:
                 news_collections.update(
@@ -81,9 +81,11 @@ def show_content(src, news_id):
         return render_template('news_edit.html', doc=doc)
 
 
-@app.route("/news/<string:src>/<string:news_id>/<string:place>", methods=['GET', 'POST'])
-def gomap(src, news_id, place):
-    return render_template("googlemapapi.html", src=src, new_id=news_id, place=place, key=key)
+@app.route("/news/<string:src>/<string:news_id>/map", methods=['GET', 'POST'])
+def gomap(src, news_id):
+    news_collections = news_db[src]
+    content = news_collections.find_one({"_id": ObjectId(news_id)})["content"].replace("<br>", "").strip()
+    return render_template("googlemapapi.html", src=src, new_id=news_id, content=content, key=key)
 
 
 if __name__ == '__main__':
