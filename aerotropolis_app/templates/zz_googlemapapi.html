@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='googlemapstyles.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='zz_googlemapstyles.css') }}">
   </head>
   <body>
 
-    <script src="{{ url_for('static', filename='googleapi.js') }}"></script>
+    <script src="{{ url_for('static', filename='myscript.js') }}"></script>
     <script>
       var url = "{{"https://maps.googleapis.com/maps/api/geocode/json?address=taiwan&key={}".format(key)}}"
       function show_name(){
@@ -28,7 +28,6 @@
   <script type="text/javascript">
     window.appConfig = {
       debug: {% if env == 'development' %}true{% else %}false{% endif %},
-      place: {{place|tojson}}
     }
   </script>
 

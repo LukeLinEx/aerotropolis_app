@@ -32,6 +32,9 @@ function initAutocomplete() {
         markers = [];
 
         // For each place, get the icon, name and location.
+        console.log(places[0].formatted_address)
+
+
         var bounds = new google.maps.LatLngBounds();
         places.forEach(function(place) {
             if (!place.geometry) {

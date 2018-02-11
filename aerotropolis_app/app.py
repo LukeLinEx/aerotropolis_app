@@ -20,7 +20,7 @@ key = get_googlemap_key().strip()
 @app.route('/')
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-    return render_template('test.html')
+    return render_template('zz_googlemapapi.html', key=key)
 
 
 @app.route('/')
