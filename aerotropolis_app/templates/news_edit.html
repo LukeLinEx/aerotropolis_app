@@ -6,6 +6,8 @@
 
 
   <body>
+    <script type="text/javascript" src="{{ url_for('static', filename='my_script.js') }}"></script>
+
     <div id="ontopDiv">
         <form action={{url_for('show_content', src=doc.source, news_id=doc._id)}} method="POST" class=add-keyword>
             <input type=submit name="gomap", value="搜索 GoogleMap"><br>
@@ -42,7 +44,7 @@
                 <input type=submit name="kword", value=確定><br>
             </form>
             {% for k in doc.keywords %}
-            {{k}}<br>
+            <button onclick="confirm_delete('{{ '\t'.join([doc.source, doc._id, k]) }}')">{{k}}</button><br>
             {% endfor %}
         </div>
     </div>
