@@ -62,7 +62,10 @@ function showSelected(){
 function confirm_delete(txt) {
     var r = confirm("確定刪除嗎？");
     if (r == true) {
-        console.log(txt)
+//        console.log(txt)
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", txt, true);
+        xhttp.send();
     }
 }
 
