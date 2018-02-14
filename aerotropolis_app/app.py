@@ -3,6 +3,7 @@ import pymongo
 from bson.objectid import ObjectId
 from flask import Flask, render_template, request, redirect, url_for
 from universal.connect_db import news_db, lst_src
+import time
 
 app = Flask(__name__)
 
@@ -53,7 +54,7 @@ def show_content(src, news_id):
         if "gomap" in request.form:
             return redirect(url_for("gomap", src=src, news_id=news_id))
         else:
-            if "kword" in request.form:
+            if "kword" in request.form and request.form["kword"]!='':
                 news_collections.update(
                     {"_id": ObjectId(news_id)},
                     {"$push": {"keywords": request.form["kword"]}}
@@ -86,6 +87,18 @@ def gomap(src, news_id):
     news_collections = news_db[src]
     content = news_collections.find_one({"_id": ObjectId(news_id)})["content"].replace("<br>", "").strip()
     return render_template("googlemapapi.html", src=src, new_id=news_id, content=content, key=key)
+
+
+@app.route("/news/<string:src>/<string:news_id>/delete/<string:kword>", methods=['POST'])
+def delete_keyword(src, news_id, kword):
+    if request.method == "POST":
+        news_collections = news_db[src]
+        news_collections.update(
+            {"_id": ObjectId(news_id)},
+            {"$pull": {"keywords": kword }}
+        )
+
+    return redirect(url_for('show_content', src=src, news_id=news_id))
 
 
 if __name__ == '__main__':
