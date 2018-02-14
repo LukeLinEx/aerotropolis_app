@@ -59,13 +59,13 @@ function showSelected(){
   }
 }
 
-function confirm_delete(txt) {
+function confirm_delete(tag) {
     var r = confirm("確定刪除嗎？");
     if (r == true) {
-//        console.log(txt)
         var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", txt, true);
+        xhttp.open("POST", "delete/"+tag.innerHTML, true);
         xhttp.send();
+        tag.parentNode.removeChild(tag);
     }
 }
 
