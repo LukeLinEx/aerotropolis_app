@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 
 def get_googlemap_key():
-    key_f = expanduser("~/.credential/googlemapapi")
+    key_f = expanduser("~/.credentials/googlemapapi")
     with open(key_f) as f:
         key = f.read()
     return key
