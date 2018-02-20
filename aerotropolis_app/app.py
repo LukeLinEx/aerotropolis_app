@@ -1,3 +1,4 @@
+import json
 from os.path import expanduser
 import pymongo
 from bson.objectid import ObjectId
@@ -86,8 +87,31 @@ def show_content(src, news_id):
 @app.route("/news/<string:src>/<string:news_id>/map", methods=['GET', 'POST'])
 def gomap(src, news_id):
     news_collections = news_db[src]
-    content = news_collections.find_one({"_id": ObjectId(news_id)})["content"].replace("<br>", "").strip()
-    return render_template("googlemapapi.html", src=src, new_id=news_id, content=content, key=key)
+    doc = news_collections.find_one({"_id": ObjectId(news_id)})
+    content = doc["content"].replace("<br>", "").strip()
+    kwords = doc["keywords"]
+
+    all_keywords = []
+    for tmp in kwords:
+        all_keywords.extend(tmp.values())
+
+    if request.method == "POST":
+        tmp = json.loads(request.args['doc'])
+
+        for doc in tmp:
+            if doc["keyword"] in all_keywords:
+                news_db[src].update(
+                    {"_id": ObjectId(news_id), "keywords.keyword":doc["keyword"]},
+                    {"$set": {"keywords.$": doc}}
+                )
+            else:
+                news_db[src].update(
+                    {"_id": ObjectId(news_id)},
+                    {"$push": {"keywords": doc}}
+                )
+        return redirect(url_for("gomap", src=src, news_id=news_id))
+    else:
+        return render_template("googlemapapi.html", src=src, new_id=news_id, content=content, key=key, kwords=kwords)
 
 
 @app.route("/news/<string:src>/<string:news_id>/delete/<string:kword>", methods=['POST'])

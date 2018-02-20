@@ -1,3 +1,5 @@
+var tmp_lst=[];
+
 function initAutocomplete() {
     var map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 25.0083024, lng: 121.3028680},
@@ -8,6 +10,7 @@ function initAutocomplete() {
     // Create the search box and link it to the UI element.
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
+
     //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
     // Bias the SearchBox results towards current map's viewport.
@@ -75,7 +78,7 @@ function initAutocomplete() {
 
                 getInfoFromMap(
                     lat=marker.position.lat(), lng=marker.position.lng(),
-                    keywords=place.name, formatted_address=place.formatted_address
+                    keyword=place.name, formatted_address=place.formatted_address
                     )
 
 
@@ -113,7 +116,6 @@ function populateInfoWindow(marker, infowindow) {
     if (infowindow.marker != marker) {
         infowindow.marker = marker;
         infowindow.setContent('<div>' + marker.title + '</div>');
-        console.log(marker.title)
         infowindow.open(map, marker);
         // Make sure the marker property is cleared if the infowindow is closed.
         infowindow.addListener('closeclick',function(){
@@ -124,33 +126,60 @@ function populateInfoWindow(marker, infowindow) {
 
 
 
-function getInfoFromMap(lat, lng, keywords="", formatted_address=""){
+function getInfoFromMap(lat, lng, keyword="", formatted_address=""){
     var form = document.getElementById("form");
-    form.getElementsByTagName("input").kword.value = keywords;
+    form.getElementsByTagName("input").kword.value = keyword;
     form.getElementsByTagName("input").lat.value = lat;
     form.getElementsByTagName("input").lng.value = lng;
     form.getElementsByTagName("input").address.value=formatted_address;
+}
+
+function formToTmpLst(tag){
+    var form = tag.parentElement;
+    var keyword = form.getElementsByTagName("input").kword.value;
+    var lat = form.getElementsByTagName("input").lat.value;
+    var lng = form.getElementsByTagName("input").lng.value;
+    var address = form.getElementsByTagName("input").address.value;
+    var doc = {
+        keyword: keyword, location: {lat: lat, lng:lng}, address:address
+    }
+
+
+    var existing = false;
+    for(var i=0; i<kwords.length; i++){
+        if(keyword == kwords[i].keyword){
+            existing=true;
+            var r = confirm("關鍵字已存在，確定變更？");
+            if (r == true) {
+                tmp_lst.push(doc);
+                add_tmp_lst_keyword(keyword);
+            }
+            break;
+        }
+    }
+    if(!existing){
+        tmp_lst.push(doc);
+        add_tmp_lst_keyword(keyword);
+    }
+}
+
+
+function add_tmp_lst_keyword(keyword){
+    var node = document.createElement("li");
+    node.innerHTML = keyword;
+    document.getElementById("kword2insert").appendChild(node);
 }
 
 
 
 
 
-
-
-
-function godb(tag){
+function godb(){
     var xhttp = new XMLHttpRequest();
-    var key = appConfig.key;
-    var search = "桃園機場";
-    var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + search + "&key=" + key;
-    xhttp.onreadystatechange = function() {
-    if (xhttp.readyState === 4) {
-            console.log( JSON.parse(xhttp.response).results[0].geometry.location );
-        }
-    }
-    xhttp.open("GET", url, true);
+    url="?doc=" + JSON.stringify(tmp_lst);
+    xhttp.open("POST", url, true);
     xhttp.send();
+    location.reload();
 }
 
 

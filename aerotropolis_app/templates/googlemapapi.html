@@ -20,7 +20,7 @@
     </div>
 
     <div id="wrapper2">
-      <div id="form" class="content"> <!-- style="display: none"> -->
+      <div id="form" class="content">
         <form>
           關鍵字:
           <input type="text" name="kword" size="20px"><br>
@@ -29,15 +29,18 @@
           緯度(lat):
           <input type="text" name="lat" size="20px"><br>
           <input type="text" name="address" size="20px"> <!-- style="display: none"> -->
-          <input type="button" value="送出" onclick="godb(this)">
+          <input type="button" value="送出" onclick="formToTmpLst(this)">
         </form>
       </div>
-      <div id="kword2insert"></div>
+      <div id="kword2insert"></div><br>
+      <input type="submit" value="儲存至資料庫" onclick="godb()">
     </div>
 
     <div id="map"></div>
     <script src="{{url_for('static', filename='googlemapapi.js')}}"></script>
     <script>
+      kwords={{kwords|tojson}};
+      key: {{key|tojson}};
       window.appConfig = {
         debug: {% if env == 'development' %}true{% else %}false{% endif %},
         key: {{key|tojson}}
