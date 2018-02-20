@@ -89,7 +89,11 @@ def gomap(src, news_id):
     news_collections = news_db[src]
     doc = news_collections.find_one({"_id": ObjectId(news_id)})
     content = doc["content"].replace("<br>", "").strip()
-    kwords = doc["keywords"]
+    if "keywords" in doc:
+        kwords = doc["keywords"]
+    else:
+        kwords = []
+
 
     all_keywords = []
     for tmp in kwords:
