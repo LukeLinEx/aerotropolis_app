@@ -44,12 +44,8 @@
                 <input type=submit name="kword", value=確定><br>
             </form>
             {% for k in doc.keywords %}
-            <!--<button onclick="confirm_delete( '{{'{src'+doc.source+',_id:'+doc._id+',kword:'+k+'}'}}' )">{{k}}</button><br>-->
-            <!--<button onclick="confirm_delete( '{{ '/news/'+doc.source+'/'+doc._id+'/delete/'+k }}' )"-->
-                    <!--method="POST"-->
-                    <!--action={{url_for('delete_keyword', src=doc.source, news_id=doc._id, kword="{{k}}")}}>{{k}}</button><br>-->
             <button onclick="confirm_delete(this)" method="POST"
-                    action={{url_for('delete_keyword', src=doc.source, news_id=doc._id, kword="{{k}}")}}>{{k}}
+                    action={{url_for('delete_keyword', src=doc.source, news_id=doc._id, kword="{{k['keyword]}}")}}>{{k['keyword']}}
             </button><br>
             {% endfor %}
         </div>

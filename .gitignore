@@ -3,3 +3,4 @@
 *.egg*
 .DS_Store
 nohup.out
+test

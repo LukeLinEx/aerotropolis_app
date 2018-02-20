@@ -63,6 +63,7 @@ function confirm_delete(tag) {
     var r = confirm("確定刪除嗎？");
     if (r == true) {
         var xhttp = new XMLHttpRequest();
+        console.log(tag.innerHTML);
         xhttp.open("POST", "delete/"+tag.innerHTML, true);
         xhttp.send();
         tag.parentNode.removeChild(tag);

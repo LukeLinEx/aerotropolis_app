@@ -57,7 +57,9 @@ def show_content(src, news_id):
             if "kword" in request.form and request.form["kword"]!='':
                 news_collections.update(
                     {"_id": ObjectId(news_id)},
-                    {"$push": {"keywords": request.form["kword"]}}
+                    {"$push": {
+                        "keywords": {"keyword": request.form["kword"]}
+                    }}
                 )
             if "importance" in request.form:
                 news_collections.update(
@@ -78,7 +80,6 @@ def show_content(src, news_id):
             doc["keywords"] = d["keywords"]
         else:
             doc["keywords"] = []
-
         return render_template('news_edit.html', doc=doc)
 
 
@@ -93,9 +94,10 @@ def gomap(src, news_id):
 def delete_keyword(src, news_id, kword):
     if request.method == "POST":
         news_collections = news_db[src]
+        print(kword)
         news_collections.update(
             {"_id": ObjectId(news_id)},
-            {"$pull": {"keywords": kword }}
+            {"$pull":{"keywords":{"keyword":kword}}}
         )
 
     return redirect(url_for('show_content', src=src, news_id=news_id))
