@@ -11,26 +11,28 @@
       <input id="pac-input" class="controls" type="text" placeholder="Search Box">
 
       <div id="wrapper1">
-        <div id="content">
+        <div class="content">
           {{content|safe}}
         </div>
       </div>
 
       <br>
-      <div id="wrapper2">
-        <div id="form"> <!-- style="display: none"> -->
-          <form>
-            關鍵字:
-            <input type="text" name="kword" size="20px"><br>
-            經度(lng):
-            <input type="text" name="lng" size="20px"><br>
-            緯度(lat):
-            <input type="text" name="lat" size="20px"><br>
-            <input type="text" name="address" size="20px"> <!-- style="display: none"> -->
-            <input type="button" value="送出" onclick="godb(this)">
-          </form>
-        </div>
+    </div>
+
+    <div id="wrapper2">
+      <div id="form" class="content"> <!-- style="display: none"> -->
+        <form>
+          關鍵字:
+          <input type="text" name="kword" size="20px"><br>
+          經度(lng):
+          <input type="text" name="lng" size="20px"><br>
+          緯度(lat):
+          <input type="text" name="lat" size="20px"><br>
+          <input type="text" name="address" size="20px"> <!-- style="display: none"> -->
+          <input type="button" value="送出" onclick="godb(this)">
+        </form>
       </div>
+      <div id="kword2insert">{{content|safe}}</div>
     </div>
 
     <div id="map"></div>
