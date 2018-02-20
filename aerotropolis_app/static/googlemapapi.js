@@ -137,6 +137,10 @@ function getInfoFromMap(lat, lng, keyword="", formatted_address=""){
 function formToTmpLst(tag){
     var form = tag.parentElement;
     var keyword = form.getElementsByTagName("input").kword.value;
+
+    //stop if keyword is empty
+    if(keyword==""){return;}
+
     var lat = form.getElementsByTagName("input").lat.value;
     var lng = form.getElementsByTagName("input").lng.value;
     var address = form.getElementsByTagName("input").address.value;
