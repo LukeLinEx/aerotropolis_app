@@ -1,7 +1,7 @@
 function initAutocomplete() {
     var map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: -33.8688, lng: 151.2195},
-        zoom: 13,
+    center: {lat: 25.0083024, lng: 121.3028680},
+        zoom: 11.3,
         mapTypeId: 'roadmap'
     });
 
@@ -13,6 +13,14 @@ function initAutocomplete() {
     // Bias the SearchBox results towards current map's viewport.
     map.addListener('bounds_changed', function() {
         searchBox.setBounds(map.getBounds());
+    });
+
+//    google.maps.event.addListener(map, 'click', function( event ){
+//        console.log( "Latitude: "+event.latLng.lat()+" "+", longitude: "+event.latLng.lng() );
+//    });
+
+    google.maps.event.addListener(map, 'click', function( event ){
+        getInfoFromMap(event.latLng.lat(), event.latLng.lng());
     });
 
     var markers = [];
@@ -32,9 +40,6 @@ function initAutocomplete() {
         markers = [];
 
         // For each place, get the icon, name and location.
-        console.log(places[0].formatted_address)
-
-
         var bounds = new google.maps.LatLngBounds();
         places.forEach(function(place) {
             if (!place.geometry) {
@@ -64,6 +69,19 @@ function initAutocomplete() {
             // Testing area!!
             (function(marker, place){
                 marker.addListener('click', function() {
+
+
+
+
+                getInfoFromMap(
+                    lat=marker.position.lat(), lng=marker.position.lng(),
+                    keywords=place.name, formatted_address=place.formatted_address
+                    )
+
+
+
+
+
                 var content = "<h1>"+place.name+"</h1>";
                 content += "<p>"+place.formatted_address+"</p>";
                 if (place.formatted_phone_number) {
@@ -74,7 +92,7 @@ function initAutocomplete() {
                 });
             })(marker, place);
 
-//            // Testing area ends!
+            // Testing area ends!
 
 
             if (place.geometry.viewport) {
@@ -103,3 +121,36 @@ function populateInfoWindow(marker, infowindow) {
         });
     }
 }
+
+
+
+function getInfoFromMap(lat, lng, keywords="", formatted_address=""){
+    var form = document.getElementById("form");
+    form.getElementsByTagName("input").kword.value = keywords;
+    form.getElementsByTagName("input").lat.value = lat;
+    form.getElementsByTagName("input").lng.value = lng;
+    form.getElementsByTagName("input").address.value=formatted_address;
+}
+
+
+
+
+
+
+
+
+function godb(tag){
+    var xhttp = new XMLHttpRequest();
+    var key = appConfig.key;
+    var search = "桃園機場";
+    var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + search + "&key=" + key;
+    xhttp.onreadystatechange = function() {
+    if (xhttp.readyState === 4) {
+            console.log( JSON.parse(xhttp.response).results[0].geometry.location );
+        }
+    }
+    xhttp.open("GET", url, true);
+    xhttp.send();
+}
+
+

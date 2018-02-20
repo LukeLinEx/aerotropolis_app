@@ -10,15 +10,36 @@
     <div class="options-box">
       <input id="pac-input" class="controls" type="text" placeholder="Search Box">
 
-      <div id="wrapper">
+      <div id="wrapper1">
         <div id="content">
           {{content|safe}}
+        </div>
+      </div>
+
+      <br>
+      <div id="wrapper2">
+        <div id="form"> <!-- style="display: none"> -->
+          <form>
+            關鍵字:
+            <input type="text" name="kword" size="20px"><br>
+            經度(lng):
+            <input type="text" name="lng" size="20px"><br>
+            緯度(lat):
+            <input type="text" name="lat" size="20px"><br>
+            <input type="text" name="address" size="20px"> <!-- style="display: none"> -->
+            <input type="button" value="送出" onclick="godb(this)">
+          </form>
         </div>
       </div>
     </div>
 
     <div id="map"></div>
-    <script src="{{url_for('static', filename='googlemapapi.js')}}">
+    <script src="{{url_for('static', filename='googlemapapi.js')}}"></script>
+    <script>
+      window.appConfig = {
+        debug: {% if env == 'development' %}true{% else %}false{% endif %},
+        key: {{key|tojson}}
+      }
     </script>
     <script src="{{'https://maps.googleapis.com/maps/api/js?key={}&libraries=places&callback=initAutocomplete'.format(key)}}"
          async defer></script>
