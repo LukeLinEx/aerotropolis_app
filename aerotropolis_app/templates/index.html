@@ -17,7 +17,7 @@
       </div>
 
       <div>
-        <form action="{{url_for('list_all_news')}}" method="POST" class=add-entry>
+        <form action="{{url_for('news.list_all_news')}}" method="POST" class=add-entry>
           <dl>
             <dd>
               <select id="src-select">
@@ -43,7 +43,7 @@
           {% for i in news %}
             <tr>
               <td width=95px align="center">{{i.date_released}}</td>
-              <td width=380px><a href="{{url_for('show_content', src=i.source, news_id=i._id)}}">{{i.title}}</a></td>
+              <td width=380px><a href="{{url_for('news.show_content', src=i.source, news_id=i._id)}}">{{i.title}}</a></td>
               <td width=60px align="center">{{i.source}}</td>
               <td width=60px align="center">{{i.importance}}</td>
             </tr>

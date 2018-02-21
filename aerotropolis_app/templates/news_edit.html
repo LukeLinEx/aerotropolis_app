@@ -9,16 +9,16 @@
     <script type="text/javascript" src="{{ url_for('static', filename='my_script.js') }}"></script>
 
     <div id="ontopDiv">
-        <form action={{url_for('show_content', src=doc.source, news_id=doc._id)}} method="POST" class=add-keyword>
-            <input type=submit name="gomap", value="搜索 GoogleMap"><br>
+        <form action={{url_for('news.show_content', src=doc.source, news_id=doc._id)}} method="POST" class=add-keyword>
+            <input type=submit name="map.gomap", value="搜索 GoogleMap"><br>
         </form>
     </div>
     <div class="left-option">
         <div>
-            <a href="{{url_for('list_all_news')}}">回到列表</a>
+            <a href="{{url_for('news.list_all_news')}}">回到列表</a>
         </div>
         <div>
-            <form action={{url_for('show_content', src=doc.source, news_id=doc._id)}} method="POST" class=add-keyword>
+            <form action={{url_for('news.show_content', src=doc.source, news_id=doc._id)}} method="POST" class=add-keyword>
                 <p>請評價重要性:</p>
                 <select name="importance">
                     {% for i in range(1,6) %}
@@ -38,15 +38,15 @@
         <br><br>
 
         <div>
-            <form action={{url_for('show_content', src=doc.source, news_id=doc._id)}} method="POST" class=add-keyword>
+            <form action={{url_for('news.show_content', src=doc.source, news_id=doc._id)}} method="POST" class=add-keyword>
                 <p>貼上關鍵字:</p>
                 <input type='text' size='20' name='kword' placeholder='Key Words'>
                 <input type=submit name="kword", value=確定><br>
             </form>
             {% for k in doc.keywords %}
             <button onclick="confirm_delete(this)" method="POST"
-                    action={{url_for('delete_keyword', src=doc.source, news_id=doc._id, kword="{{k['keyword]}}")}}>{{k['keyword']}}
-            </button><br>
+                    action={{url_for('news.delete_keyword', src=doc.source,
+                    news_id=doc._id, kword="{{k['keyword]}}")}}>{{k['keyword']}}</button><br>
             {% endfor %}
         </div>
     </div>
