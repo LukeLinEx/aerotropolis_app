@@ -33,7 +33,7 @@ def list_all_news():
 def show_content(src, news_id):
     if request.method == "POST":
         news_collections = news_db[src]
-        if "map.gomap" in request.form:
+        if "gomap" in request.form:
             return redirect(url_for("map.gomap", src=src, news_id=news_id))
         else:
             if "kword" in request.form and request.form["kword"]!='':

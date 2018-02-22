@@ -34,19 +34,37 @@ def gomap(src, news_id):
         all_keywords.extend(tmp.values())
 
     if request.method == "POST":
-        tmp = json.loads(request.args['doc'])
-
-        for doc in tmp:
-            if doc["keyword"] in all_keywords:
-                news_db[src].update(
-                    {"_id": ObjectId(news_id), "keywords.keyword":doc["keyword"]},
-                    {"$set": {"keywords.$": doc}}
-                )
-            else:
-                news_db[src].update(
-                    {"_id": ObjectId(news_id)},
-                    {"$push": {"keywords": doc}}
-                )
-        return redirect(url_for("gomap", src=src, news_id=news_id))
+        if "showmap" in request.form:
+            return redirect(url_for("map.showall", src=src, news_id=news_id))
+        else:
+            tmp = json.loads(request.args['doc'])
+            for doc in tmp:
+                if doc["keyword"] in all_keywords:
+                    news_db[src].update(
+                        {"_id": ObjectId(news_id), "keywords.keyword":doc["keyword"]},
+                        {"$set": {"keywords.$": doc}}
+                    )
+                else:
+                    news_db[src].update(
+                        {"_id": ObjectId(news_id)},
+                        {"$push": {"keywords": doc}}
+                    )
+            return redirect(url_for("gomap", src=src, news_id=news_id))
     else:
-        return render_template("googlemapapi.html", src=src, new_id=news_id, content=content, key=key, kwords=kwords)
+        return render_template("googlemapapi.html", src=src, news_id=news_id, content=content, key=key, kwords=kwords)
+
+
+@map_bp.route("show/<string:src>/<string:news_id>")
+def showall(src, news_id):
+    news_collections = news_db[src]
+    doc = news_collections.find_one({"_id": ObjectId(news_id)})
+    kwords = []
+    if "keywords" in doc:
+        for kword in doc["keywords"]:
+            if "location" in kword:
+                kword["title"]=kword["keyword"]
+                kword["location"]["lat"]=float(kword["location"]["lat"])
+                kword["location"]["lng"]=float(kword["location"]["lng"])
+                kwords.append(kword)
+
+    return render_template("showallmap.html",kwords=kwords, key=key)
