@@ -74,3 +74,8 @@ def delete_keyword(src, news_id, kword):
             {"$pull":{"keywords":{"keyword":kword}}}
         )
     return redirect(url_for('news.show_content', src=src, news_id=news_id))
+
+
+@new_bp.route("/google6d7dfa23595b00ef")
+def google_verify():
+    return render_template("google6d7dfa23595b00ef.html")
